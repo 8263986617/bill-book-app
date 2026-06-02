@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/bills";
-const COMPANY_URL = "http://localhost:5000/api/company";
+const API_URL = "https://bill-book-app.onrender.com/api/bills";
+const COMPANY_URL = "https://bill-book-app.onrender.com/api/company";
 
 export const getBills = async () => {
   const response = await axios.get(API_URL);
