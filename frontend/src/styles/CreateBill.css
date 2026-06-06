@@ -17,7 +17,7 @@
 
 .bill-form-section h2 {
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   color: #333;
   padding-bottom: 12px;
   border-bottom: 2px solid #ffebee;
@@ -64,79 +64,62 @@
 }
 
 /* Items Table */
-.items-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 12px;
-}
-
 .items-table-wrapper {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  margin-bottom: 12px;
 }
 
-/* ensure table is wide enough to enable horizontal scroll on small screens */
 .items-table {
-  min-width: 760px;
-}
-
-/* Sticky first three columns on small screens so name/qty/rate stay visible */
-@media (max-width: 900px) {
-  .items-table th:first-child,
-  .items-table td:first-child {
-    position: sticky;
-    left: 0;
-    z-index: 5;
-    background: #fff;
-  }
-
-  .items-table th:nth-child(2),
-  .items-table td:nth-child(2) {
-    position: sticky;
-    left: 320px; /* width of first column */
-    z-index: 4;
-    background: #fff;
-    text-align: right;
-  }
-
-  .items-table th:nth-child(3),
-  .items-table td:nth-child(3) {
-    position: sticky;
-    left: 400px; /* first + second col */
-    z-index: 4;
-    background: #fff;
-    text-align: right;
-  }
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  margin: 0;
+  table-layout: fixed;
+  border: 1px solid #f3d6db;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
 }
 
 .items-table th {
-  background: #ffebee;
-  color: #c41e3a;
+  background: #fde4ec;
+  color: #b01b38;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #ef9a9a;
+  padding: 16px 14px;
+  text-align: center;
+  border-bottom: 1px solid #f3d6db;
 }
 
-/* Larger column widths for better editing */
-.items-table th:nth-child(1) { width: 52%; }
-.items-table th:nth-child(2) { width: 12%; text-align: right; }
-.items-table th:nth-child(3) { width: 12%; text-align: right; }
-.items-table th:nth-child(4) { width: 16%; text-align: right; }
-.items-table th:nth-child(5) { width: 8%; text-align: center; }
+.items-table th:nth-child(1),
+.items-table th:nth-child(2),
+.items-table th:nth-child(3),
+.items-table th:nth-child(4),
+.items-table th:nth-child(5) {
+  width: 20%;
+}
 
 .items-table td {
   padding: 0;
-  border-bottom: 1px solid #e0e0e0;
-  min-height: 56px;
+  border-bottom: 1px solid #f3d6db;
+  background: #fff;
+  vertical-align: middle;
+}
+
+.items-table tr {
+  min-height: 72px;
+}
+
+.items-table tr:last-child td {
+  border-bottom: none;
 }
 
 .items-table tr:hover td {
-  background: #fafafa;
+  background: #fff;
 }
 
 .input-cell {
@@ -165,8 +148,6 @@
 }
 
 @media (max-width: 768px) {
-  .items-table th:nth-child(1) { width: 50%; }
-  .items-table th:nth-child(2), .items-table th:nth-child(3), .items-table th:nth-child(4) { width: auto; }
   .form-actions .btn { width: 48%; }
 }
 
@@ -204,18 +185,31 @@
 /* Overrides to ensure larger/taller input boxes for items */
 .items-table input,
 .input-cell {
-  padding: 18px 20px !important;
-  font-size: 16px !important;
-  min-height: 56px !important;
-  border-radius: 8px !important;
+  padding: 18px 16px !important;
+  font-size: 15px !important;
+  min-height: 62px !important;
+  border-radius: 10px !important;
+  border: 1px solid #f2d7df !important;
+  background: #fff !important;
+}
+
+.items-table td:last-child .btn-delete {
+  margin: 0 auto;
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #f3d6db;
 }
 
 @media (max-width: 900px) {
   .items-table input,
   .input-cell {
-    min-height: 64px !important;
-    padding: 18px 16px !important;
-    font-size: 16px !important;
+    min-height: 68px !important;
+    padding: 16px 14px !important;
+    font-size: 15px !important;
   }
 }
 
