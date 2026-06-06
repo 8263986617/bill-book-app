@@ -138,6 +138,10 @@ img {
   color: #fff;
 }
 
+.topbar .brand-title {
+  color: #fff;
+}
+
 .brand-title {
   font-weight: 700;
   font-size: 1.1rem;
