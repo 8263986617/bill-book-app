@@ -159,6 +159,25 @@
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+}
+
+/* Overrides to ensure larger/taller input boxes for items */
+.items-table input,
+.input-cell {
+  padding: 18px 20px !important;
+  font-size: 16px !important;
+  min-height: 56px !important;
+  border-radius: 8px !important;
+}
+
+@media (max-width: 900px) {
+  .items-table input,
+  .input-cell {
+    min-height: 64px !important;
+    padding: 18px 16px !important;
+    font-size: 16px !important;
+  }
+}
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
