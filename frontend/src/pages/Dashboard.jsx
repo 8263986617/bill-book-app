@@ -59,7 +59,7 @@ export default function Dashboard() {
 
         bills.forEach((bill) => {
           const date = new Date(bill.createdAt);
-          const monthName = date.toLocaleDateString("en-US", {
+          const monthName = date.toLocaleDateString("mr-IN", {
             month: "short",
           });
 
@@ -160,7 +160,7 @@ export default function Dashboard() {
                   color: "#999",
                 }}
               >
-                No data available
+                डेटा उपलब्ध नाही
               </p>
             )}
           </div>
@@ -211,7 +211,7 @@ export default function Dashboard() {
               color: "#999",
             }}
           >
-            No bills available
+            सध्या कोणतीही बिल उपलब्ध नाहीत
           </p>
         )}
       </div>

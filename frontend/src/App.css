@@ -4,8 +4,10 @@
   box-sizing: border-box;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700;900&display=swap');
+
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Noto Sans Devanagari', 'Lato', sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -124,12 +126,67 @@ img {
   align-items: center;
   justify-content: space-between;
   padding: 20px 28px;
-  background: var(--surface);
+  background: linear-gradient(90deg,#d32f2f 0%, #000000 100%);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.04);
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+.gradient-header {
+  color: #fff;
+}
+
+.brand-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.1;
+}
+
+/* Bottom navigation (mobile) */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 8px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  justify-content: space-around;
+  align-items: center;
+  z-index: 50;
+}
+
+.bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--gray-dark);
+  font-weight: 700;
+  padding: 8px 10px;
+}
+
+.bottom-nav .nav-item { font-size: 13px; padding: 12px 10px; }
+.bottom-nav .nav-item > span { font-family: 'Noto Sans Devanagari', sans-serif; }
+
+/* larger touch targets */
+.btn, .form-control, .input-cell {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 900px) {
+  .sidebar { display: none !important; }
+  .main { margin-left: 0; width: 100%; }
+  .app { padding-bottom: 88px; }
+  .bottom-nav { display: flex; }
+  .topbar { padding: 14px 16px; }
+  .btn { padding: 14px 18px; border-radius: 12px; }
 }
 
 .page {
@@ -435,6 +492,7 @@ img {
   width: min(960px, 100%);
   max-height: calc(100vh - 48px);
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .preview-actions {

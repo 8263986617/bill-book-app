@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createBill, getBillById, getNextBillNo, updateBill } from "../services/billService";
 import { numToWordsMr } from "../utils/numberToWords";
 import "../styles/CreateBill.css";
+import { useToast } from "../context/ToastContext";
 
 export default function CreateBill() {
   const { id } = useParams();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [customerName, setCustomerName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -65,7 +67,7 @@ export default function CreateBill() {
           );
         } catch (error) {
           console.error("Error loading bill:", error);
-          alert("बिल लोड करताना त्रुटी आली.");
+          showToast("बिल लोड करताना त्रुटी आली.", "error");
         }
       } else {
         await fetchNextBillNo();
@@ -136,19 +138,19 @@ export default function CreateBill() {
   const saveBill = async () => {
     try {
       if (!customerName.trim()) {
-        alert("कृपया ग्राहकाचे नाव भरा");
+        showToast("कृपया ग्राहकाचे नाव भरा", "error");
         return;
       }
 
       if (!mobile.trim()) {
-        alert("कृपया मोबाइल नंबर भरा");
+        showToast("कृपया मोबाइल नंबर भरा", "error");
         return;
       }
 
       const validItems = formatItems(items);
 
       if (validItems.length === 0) {
-        alert("कृपया किमान एक वस्तूचे/सेवा नाव भरा");
+        showToast("कृपया किमान एक वस्तूचे/सेवा नाव भरा", "error");
         return;
       }
 
@@ -166,14 +168,14 @@ export default function CreateBill() {
 
       if (isEditMode) {
         await updateBill(id, billData);
-        alert("बिल यशस्वीरित्या अद्यतनित केले");
+        showToast("बिल यशस्वीरित्या अद्यतनित केले ✓", "success");
       } else {
         const response = await createBill(billData);
         const savedBill = response?.data;
         if (savedBill?.billNo) {
           setBillNo(savedBill.billNo.toString());
         }
-        alert("बिल यशस्वीरित्या जतन केले");
+        showToast("बिल जतन झाले ✓", "success");
       }
 
       setCustomerName("");
@@ -198,9 +200,9 @@ export default function CreateBill() {
     } catch (error) {
       console.error(error);
       if (error.response?.data?.message) {
-        alert(error.response.data.message);
+        showToast(error.response.data.message, "error");
       } else {
-        alert(error.message || "Error saving bill");
+        showToast(error.message || "बिल जतन करताना त्रुटी आली", "error");
       }
     } finally {
       setLoading(false);
@@ -220,17 +222,17 @@ export default function CreateBill() {
 
   const handlePreview = () => {
     if (!customerName.trim()) {
-      alert("कृपया ग्राहकाचे नाव भरा");
+      showToast("कृपया ग्राहकाचे नाव भरा", "error");
       return;
     }
 
     if (!mobile.trim()) {
-      alert("कृपया मोबाइल नंबर भरा");
+      showToast("कृपया मोबाइल नंबर भरा", "error");
       return;
     }
 
     if (previewItems.length === 0) {
-      alert("कृपया किमान एक वस्तूचे/सेवा नाव भरा");
+      showToast("कृपया किमान एक वस्तूचे/सेवा नाव भरा", "error");
       return;
     }
 
@@ -246,7 +248,7 @@ export default function CreateBill() {
       const { jsPDF } = window.jspdf;
       const html2canvas = window.html2canvas;
       if (!jsPDF || !html2canvas) {
-        alert("PDF साठी आवश्यक ग्रंथालये उपलब्ध नाहीत. ब्राउझर प्रिंट वापरण्यासाठी.");
+        showToast("PDF साठी आवश्यक ग्रंथालये उपलब्ध नाहीत. ब्राउझर प्रिंट वापरण्यासाठी.", "info");
         window.print();
         return;
       }
@@ -273,7 +275,7 @@ export default function CreateBill() {
       pdf.save(`Bill_${billNo || "Preview"}_${safeName}.pdf`);
     } catch (error) {
       console.error(error);
-      alert("PDF तयार करण्यात समस्या. ब्राउझर प्रिंट वापरात येत आहे.");
+      showToast("PDF तयार करण्यात समस्या. ब्राउझर प्रिंट वापरात येत आहे.", "error");
       window.print();
     }
   };
@@ -510,10 +512,19 @@ export default function CreateBill() {
                     {previewItems.map((item, idx) => (
                       <tr key={idx}>
                         <td>{idx + 1}</td>
-                        <td>{item.name}</td>
-                        <td>{item.quantity || ""}</td>
-                        <td>{item.rate ? Number(item.rate).toLocaleString("en-IN") : ""}</td>
-                        <td>{item.amount ? Number(item.amount).toLocaleString("en-IN") : ""}</td>
+                        <td>
+                          <div>{item.name}</div>
+                          <div style={{ fontSize: 12, color: '#666', marginTop: 6 }}>
+                            {item.quantity && item.rate
+                              ? `${item.quantity} × ₹${Number(item.rate).toLocaleString('en-IN')}`
+                              : item.amount
+                              ? `मजुरी: ₹${Number(item.amount).toLocaleString('en-IN')}`
+                              : ''}
+                          </div>
+                        </td>
+                        <td>{item.quantity || ''}</td>
+                        <td>{item.rate ? Number(item.rate).toLocaleString('en-IN') : ''}</td>
+                        <td>{item.amount ? Number(item.amount).toLocaleString('en-IN') : ''}</td>
                       </tr>
                     ))}
                   </tbody>

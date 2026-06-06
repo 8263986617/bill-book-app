@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getBills, deleteBill } from "../services/billService";
 import "../styles/BillsList.css";
+import { useToast } from "../context/ToastContext";
 
 export default function BillsList() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ export default function BillsList() {
       console.log(error);
     }
   };
+
+  const { showToast } = useToast();
 
   const filteredBills = useMemo(
     () =>
@@ -46,7 +49,7 @@ export default function BillsList() {
       fetchBills();
     } catch (error) {
       console.error(error);
-      alert("बिल हटवताना त्रुटी आली.");
+      showToast("बिल हटवताना त्रुटी आली.", "error");
     }
   };
 

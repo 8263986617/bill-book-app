@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { saveCompany, getCompany } from "../services/billService";
 import "../styles/CompanySettings.css";
+import { useToast } from "../context/ToastContext";
 
 export default function CompanySettings() {
   const [companyName, setCompanyName] = useState("");
@@ -47,6 +48,8 @@ export default function CompanySettings() {
     loadCompanyData();
   }, []);
 
+  const { showToast } = useToast();
+
   const handleImageUpload = (event, type) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -76,7 +79,7 @@ export default function CompanySettings() {
       } else if (type === "signature") {
         setSignatureLoading(false);
       }
-      alert(`Error loading ${type}. Please try a different image.`);
+      showToast(`चित्र अपलोड करताना त्रुटी. कृपया वेगळे चित्र वापरून पहा.`, "error");
     };
 
     reader.readAsDataURL(file);
@@ -85,7 +88,7 @@ export default function CompanySettings() {
   const handleSave = async () => {
     try {
       if (!companyName.trim()) {
-        alert("Please enter company name");
+        showToast("कृपया कंपनीचे नाव भरा", "error");
         return;
       }
 
@@ -114,20 +117,20 @@ export default function CompanySettings() {
       if (response.success || response.data) {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
-        alert(`✓ Settings Saved Successfully${logo ? '\n✓ Logo Saved' : ''}${signature ? '\n✓ Signature Saved' : ''}`);
+        showToast(`सेटिंग्ज जतन झाल्या ✓${logo ? ' • लोगो तयार' : ''}${signature ? ' • सही तयार' : ''}`, "success");
         if (response.data) {
           setLogo(response.data.logo || logo);
           setSignature(response.data.signature || signature);
         }
       } else {
-        alert("Error: Save response invalid");
+        showToast("सेटिंग्ज जतन करण्यात समस्या आली.", "error");
       }
     } catch (error) {
       console.error("Error saving company:", error);
       if (error.response?.data?.message) {
-        alert(`Error: ${error.response.data.message}`);
+        showToast(`त्रुटी: ${error.response.data.message}`, "error");
       } else {
-        alert(`Error saving settings: ${error.message}`);
+        showToast(`सेटिंग्ज जतन करताना त्रुटी: ${error.message}`, "error");
       }
     } finally {
       setLoading(false);
@@ -138,31 +141,31 @@ export default function CompanySettings() {
     <div className="company-settings-container">
       {saved && (
         <div className="success-message">
-          ✓ Settings saved successfully
-          {logo && " (Logo saved)"}
-          {signature && " (Signature saved)"}
+          ✓ सेटिंग्ज जतन झाल्या
+          {logo && " • लोगो जतन"}
+          {signature && " • सही जतन"}
         </div>
       )}
 
       <div className="settings-section">
-        <h2>Company Information</h2>
+        <h2>कंपनी माहिती</h2>
         <div className="form-row">
           <div className="form-group">
-            <label>Company Name *</label>
+            <label>कंपनीचे नाव *</label>
             <input
               type="text"
               className="form-control"
-              placeholder="Enter company name"
+              placeholder="कंपनीचे नाव टाका"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>Owner Name</label>
+            <label>मालकाचे नाव</label>
             <input
               type="text"
               className="form-control"
-              placeholder="Enter owner name"
+              placeholder="मालकाचे नाव टाका"
               value={ownerName}
               onChange={(e) => setOwnerName(e.target.value)}
             />
@@ -171,21 +174,21 @@ export default function CompanySettings() {
 
         <div className="form-row">
           <div className="form-group">
-            <label>Mobile Number</label>
+            <label>मोबाइल नंबर</label>
             <input
               type="text"
               className="form-control"
-              placeholder="Enter mobile number"
+              placeholder="मोबाइल नंबर टाका"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>GST Number</label>
+            <label>GST क्रमांक</label>
             <input
               type="text"
               className="form-control"
-              placeholder="Enter GST number"
+              placeholder="GST क्रमांक टाका"
               value={gstNumber}
               onChange={(e) => setGstNumber(e.target.value)}
             />
@@ -193,10 +196,10 @@ export default function CompanySettings() {
         </div>
 
         <div className="form-group">
-          <label>Address</label>
+          <label>पत्ता</label>
           <textarea
             className="form-control"
-            placeholder="Enter full address"
+            placeholder="पूर्ण पत्ता टाका"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             rows="3"
@@ -204,10 +207,10 @@ export default function CompanySettings() {
         </div>
 
         <div className="form-group">
-          <label>Services Description</label>
+          <label>सेवांची माहिती</label>
           <textarea
             className="form-control"
-            placeholder="Describe your services (e.g., Fabrication, Welding, etc.)"
+            placeholder="उदाहरण: फॅब्रिकेशन, वेल्डिंग इत्यादी"
             value={services}
             onChange={(e) => setServices(e.target.value)}
             rows="3"
@@ -216,11 +219,11 @@ export default function CompanySettings() {
       </div>
 
       <div className="settings-section">
-        <h2>Company Branding</h2>
+        <h2>कंपनी ब्रँडिंग</h2>
 
         <div className="form-row">
           <div className="upload-container">
-            <label>Company Logo</label>
+            <label>कंपनी लोगो</label>
             <div className="upload-area">
               <input
                 type="file"
@@ -229,15 +232,15 @@ export default function CompanySettings() {
               />
               <div className="upload-content">
                 {logoLoading ? (
-                  <p style={{ fontSize: '13px', color: '#666' }}>Loading logo...</p>
+                  <p style={{ fontSize: '13px', color: '#666' }}>लोगो लोड होत आहे...</p>
                 ) : logo ? (
                   <>
                     <img src={logo} alt="Company Logo" className="upload-preview" />
-                    <p style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>✓ Ready to save</p>
+                    <p style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>✓ जतन करण्यास तयार</p>
                   </>
                 ) : (
                   <div className="upload-placeholder">
-                    📸 Click to upload logo
+                    📸 लोगो अपलोड करा
                   </div>
                 )}
               </div>
@@ -247,13 +250,13 @@ export default function CompanySettings() {
                 className="btn-remove"
                 onClick={() => setLogo(null)}
               >
-                Remove Logo
+                लोगो हटवा
               </button>
             )}
           </div>
 
           <div className="upload-container">
-            <label>Authorized Signature</label>
+            <label>अधिकृत सही</label>
             <div className="upload-area">
               <input
                 type="file"
@@ -262,15 +265,15 @@ export default function CompanySettings() {
               />
               <div className="upload-content">
                 {signatureLoading ? (
-                  <p style={{ fontSize: '13px', color: '#666' }}>Loading signature...</p>
+                  <p style={{ fontSize: '13px', color: '#666' }}>सही लोड होत आहे...</p>
                 ) : signature ? (
                   <>
                     <img src={signature} alt="Signature" className="upload-preview" />
-                    <p style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>✓ Ready to save</p>
+                    <p style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>✓ जतन करण्यास तयार</p>
                   </>
                 ) : (
                   <div className="upload-placeholder">
-                    ✍️ Click to upload signature
+                    ✍️ सही अपलोड करा
                   </div>
                 )}
               </div>
@@ -280,7 +283,7 @@ export default function CompanySettings() {
                 className="btn-remove"
                 onClick={() => setSignature(null)}
               >
-                Remove Signature
+                सही हटवा
               </button>
             )}
           </div>
@@ -288,12 +291,12 @@ export default function CompanySettings() {
       </div>
 
       <div className="form-actions">
-        <button
+          <button
           className="btn btn-primary"
           onClick={handleSave}
           disabled={loading || logoLoading || signatureLoading}
         >
-          {loading ? "Saving..." : "💾 Save Settings"}
+          {loading ? "जतन करत आहे..." : "💾 सेटिंग्ज जतन करा"}
         </button>
       </div>
     </div>

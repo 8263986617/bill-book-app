@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getBillById, getCompany } from "../services/billService";
 import { numToWordsMr } from "../utils/numberToWords";
 import "../styles/ViewBill.css";
+import { useToast } from "../context/ToastContext";
 
 export default function ViewBill() {
   const { id } = useParams();
@@ -49,7 +50,7 @@ export default function ViewBill() {
       const html2canvas = window.html2canvas;
 
       if (!html2canvas || !jsPDF) {
-        alert("PDF लायब्ररी लोड झाल्या नाहीत. कृपया प्रथम PDF डाउनलोड करा आणि नंतर WhatsApp वर शेअर करा.");
+        showToast("PDF लायब्ररी उपलब्ध नाहीत. कृपया आधी PDF डाउनलोड करा आणि नंतर शेअर करा.", "info");
         return;
       }
 
@@ -88,11 +89,11 @@ export default function ViewBill() {
           text: `शिवानी फॅब्रिकेशन बिल - ${bill.customerName || "ग्राहक"}`,
         });
       } else {
-        alert("WhatsApp PDF शेअर करण्यासाठी तुमच्या डिव्हाइसवर शेअर API सपोर्ट करणे आवश्यक आहे. तुम्ही PDF डाउनलोड करून नंतर WhatsApp वर शेअर करू शकता.");
+        showToast("तुमच्या डिव्हाइसवर शेअर API उपलब्ध नाही. PDF डाउनलोड करून नंतर शेअर करा.", "info");
       }
     } catch (error) {
       console.error("Error sharing PDF:", error);
-      alert("PDF शेअर करताना त्रुटी. कृपया आधी PDF डाउनलोड करा आणि नंतर शेअर करा.");
+      showToast("PDF शेअर करताना त्रुटी झाली. कृपया आधी PDF डाउनलोड करा आणि नंतर शेअर करा.", "error");
     }
   };
 
@@ -102,7 +103,7 @@ export default function ViewBill() {
       const html2canvas = window.html2canvas;
 
       if (!html2canvas || !jsPDF) {
-        alert("PDF libraries not loaded. Using browser print instead.");
+        showToast("PDF लायब्ररी उपलब्ध नाहीत — प्रिंटचा वापर केला जात आहे.", "info");
         window.print();
         return;
       }
@@ -134,7 +135,7 @@ export default function ViewBill() {
       pdf.save(`Bill_${billNumber}_${safeName}.pdf`);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert("Error generating PDF. Using browser print instead.");
+      showToast("PDF तयार करताना त्रुटी. ब्राउझर प्रिंट वापरला जात आहे.", "error");
       window.print();
     }
   };

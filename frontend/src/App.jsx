@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/useAuth";
 
 import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import BottomNav from "./components/BottomNav";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import BillsList from "./pages/BillsList";
@@ -13,10 +15,12 @@ import "./App.css";
 
 function ProtectedLayout({ children }) {
   return (
-    <div className="app-layout">
+    <div className="app-layout app">
       <Sidebar />
-      <div className="main-content">
-        {children}
+      <div className="main">
+        <Header />
+        <div className="page">{children}</div>
+        <BottomNav />
       </div>
     </div>
   );
