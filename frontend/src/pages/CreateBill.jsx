@@ -265,12 +265,13 @@ export default function CreateBill() {
       element.style.width = '210mm';
       element.style.boxSizing = 'border-box';
 
-      const canvas = await html2canvas(element, { scale: Math.max(window.devicePixelRatio || 1, 2), useCORS: true });
+      const scale = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
+      const canvas = await html2canvas(element, { scale, useCORS: true });
 
       // restore width
       element.style.width = prevWidth || '';
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
+      const imgData = canvas.toDataURL("image/jpeg", 0.8);
+      const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4", compress: true });
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgProps = pdf.getImageProperties(imgData);
