@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 import { saveCompany, getCompany } from "../services/billService";
 import "../styles/CompanySettings.css";
 import { useToast } from "../context/ToastContext";
@@ -49,6 +51,13 @@ export default function CompanySettings() {
   }, []);
 
   const { showToast } = useToast();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const handleImageUpload = (event, type) => {
     const file = event.target.files?.[0];
@@ -297,6 +306,13 @@ export default function CompanySettings() {
           disabled={loading || logoLoading || signatureLoading}
         >
           {loading ? "जतन करत आहे..." : "💾 सेटिंग्ज जतन करा"}
+        </button>
+        <button
+          className="btn btn-outline"
+          style={{ marginLeft: 12 }}
+          onClick={handleLogout}
+        >
+          🔒 लॉगआउट
         </button>
       </div>
     </div>
