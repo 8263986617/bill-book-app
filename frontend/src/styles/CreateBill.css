@@ -611,6 +611,7 @@
 @media (max-width: 768px) {
   .create-bill-container {
     padding: 15px;
+    padding-bottom: 200px; /* extra space so sticky action & bottom-nav don't cover inputs */
   }
 
   .form-grid {

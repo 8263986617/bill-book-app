@@ -18,6 +18,7 @@ export default function CreateBill() {
   const [loading, setLoading] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const previewRef = useRef();
+  const containerRef = useRef();
 
   const [items, setItems] = useState([
     {
@@ -76,6 +77,32 @@ export default function CreateBill() {
 
     loadBillData();
   }, [id, isEditMode]);
+
+  // Ensure inputs scroll into view on mobile so sticky actions don't cover them
+  useEffect(() => {
+    const root = containerRef.current || document;
+    const handler = (e) => {
+      const t = e.target;
+      if (!t) return;
+      if (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable) {
+        // slight delay to allow mobile keyboard to open
+        setTimeout(() => {
+          try {
+            t.scrollIntoView({ behavior: "smooth", block: "center" });
+          } catch (err) {
+            // fallback: window scroll
+            const rect = t.getBoundingClientRect();
+            window.scrollTo({ top: window.scrollY + rect.top - 150, behavior: "smooth" });
+          }
+        }, 200);
+      }
+    };
+
+    root.addEventListener && root.addEventListener("focusin", handler);
+    return () => {
+      root.removeEventListener && root.removeEventListener("focusin", handler);
+    };
+  }, []);
 
   const handleItemChange = (index, field, value) => {
     const updatedItems = [...items];
