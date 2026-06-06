@@ -527,9 +527,6 @@ export default function CreateBill() {
               </button>
             </div>
             <div className="preview-actions">
-              <button className="btn btn-secondary" type="button" onClick={downloadPreviewPDF}>
-                📥 PDF डाउनलोड करा
-              </button>
               <button className="btn btn-primary" type="button" onClick={saveFromPreview} disabled={loading}>
                 💾 बिल जतन करा
               </button>
