@@ -105,11 +105,12 @@
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .bills-table {
   width: 100%;
+  min-width: 740px;
   border-collapse: collapse;
 }
 
@@ -157,19 +158,24 @@
 .actions {
   display: flex;
   gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .actions button {
   background: none;
   border: 1px solid #ddd;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  padding: 0;
   transition: all 0.3s;
 }
 
@@ -227,6 +233,7 @@
   }
 
   .actions {
-    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px;
   }
 }
