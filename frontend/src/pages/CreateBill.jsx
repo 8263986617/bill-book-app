@@ -81,16 +81,17 @@ export default function CreateBill() {
   // Ensure inputs scroll into view on mobile so sticky actions don't cover them
   useEffect(() => {
     const root = containerRef.current || document;
-    const handler = (e) => {
+    const handlerIn = (e) => {
       const t = e.target;
       if (!t) return;
       if (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable) {
+        // hide sticky actions while typing so they don't cover fields
+        document.body.classList.add("hide-sticky-actions");
         // slight delay to allow mobile keyboard to open
         setTimeout(() => {
           try {
             t.scrollIntoView({ behavior: "smooth", block: "center" });
           } catch (err) {
-            // fallback: window scroll
             const rect = t.getBoundingClientRect();
             window.scrollTo({ top: window.scrollY + rect.top - 150, behavior: "smooth" });
           }
@@ -98,9 +99,20 @@ export default function CreateBill() {
       }
     };
 
-    root.addEventListener && root.addEventListener("focusin", handler);
+    const handlerOut = (e) => {
+      const t = e.target;
+      if (!t) return;
+      if (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable) {
+        // restore actions after leaving field
+        document.body.classList.remove("hide-sticky-actions");
+      }
+    };
+
+    root.addEventListener && root.addEventListener("focusin", handlerIn);
+    root.addEventListener && root.addEventListener("focusout", handlerOut);
     return () => {
-      root.removeEventListener && root.removeEventListener("focusin", handler);
+      root.removeEventListener && root.removeEventListener("focusin", handlerIn);
+      root.removeEventListener && root.removeEventListener("focusout", handlerOut);
     };
   }, []);
 

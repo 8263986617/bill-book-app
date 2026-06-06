@@ -614,6 +614,21 @@
     padding-bottom: 200px; /* extra space so sticky action & bottom-nav don't cover inputs */
   }
 
+/* When typing, hide sticky actions so inputs remain visible */
+.hide-sticky-actions .form-actions.sticky-mobile,
+.hide-sticky-actions .bottom-nav,
+.hide-sticky-actions .preview-overlay {
+  display: none !important;
+}
+
+/* Ensure inputs scroll margin so scrollIntoView shows them above sticky area */
+.items-table input,
+.input-cell,
+.form-group input,
+.form-group textarea {
+  scroll-margin-bottom: 220px;
+}
+
   .form-grid {
     grid-template-columns: 1fr;
   }
