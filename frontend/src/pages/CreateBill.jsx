@@ -455,7 +455,7 @@ export default function CreateBill() {
         </div>
       </div>
 
-      <div className="form-actions">
+      <div className="form-actions sticky-mobile">
         <button
           className="btn btn-secondary"
           type="button"

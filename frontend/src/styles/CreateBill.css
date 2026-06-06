@@ -613,4 +613,28 @@
   .form-actions {
     flex-direction: column;
   }
+
+  /* Make the action bar sticky above bottom navigation so save/preview are always visible */
+  .form-actions.sticky-mobile {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 86px; /* sits above the bottom-nav which is ~12px from bottom */
+    background: transparent;
+    padding: 8px;
+    gap: 8px;
+    display: flex;
+    z-index: 80;
+    align-items: center;
+  }
+
+  .form-actions.sticky-mobile .btn {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+/* Fallback for very small screens to ensure buttons are visible */
+@media (max-width: 420px) {
+  .form-actions.sticky-mobile { bottom: 100px; }
 }
