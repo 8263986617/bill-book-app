@@ -477,6 +477,20 @@
   font-size: 13px;
 }
 
+/* Ensure input text is visible on all themes / mobile desktop-site */
+.items-table input,
+.input-cell,
+.form-group input,
+.form-group textarea {
+  color: #111 !important;
+  background: #fff !important;
+  caret-color: var(--red) !important;
+  -webkit-text-fill-color: #111 !important;
+}
+
+/* Make sure preview overlay doesn't obscure form inputs when positioned */
+.preview-overlay { z-index: 9999; }
+
 .item-amount {
   font-weight: 600;
   color: #333;
