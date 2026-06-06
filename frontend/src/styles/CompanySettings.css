@@ -4,6 +4,10 @@
   max-width: 1000px;
   margin: 0 auto;
 }
+/* ensure actions aren't hidden behind mobile bottom nav */
+.company-settings-container {
+  padding-bottom: 180px;
+}
 
 .success-message {
   background: #e8f5e9;
@@ -234,6 +238,23 @@ textarea.form-control {
 
   .form-actions {
     flex-direction: column;
+  }
+
+  /* keep actions visible above mobile bottom nav / toolbars */
+  .form-actions {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 88px; /* above bottom nav */
+    z-index: 120;
+    background: transparent;
+    padding: 8px 0;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .form-actions .btn {
+    width: 48%;
   }
 
   .btn {
