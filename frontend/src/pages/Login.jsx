@@ -28,7 +28,7 @@ export default function Login() {
       const validPassword = "9272970997";
 
       if (mobile !== validMobile || password !== validPassword) {
-        setError("चुकीचा मोबाइल नंबर किंवा पासवर्ड. कृपया 9272970997 वापरा.");
+        setError("चुकीचा मोबाइल नंबर किंवा पासवर्ड.");
         setLoading(false);
         return;
       }
@@ -96,10 +96,6 @@ export default function Login() {
             {loading ? "प्रवेश करत आहे..." : "लॉगिन"}
           </button>
         </form>
-
-        <div className="demo-info">
-          <p>फक्त मोबाइल नंबर 9272970997 आणि पासवर्ड 9272970997 वापरून लॉगिन करा.</p>
-        </div>
       </div>
     </div>
   );
