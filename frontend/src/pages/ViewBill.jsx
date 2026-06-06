@@ -72,7 +72,15 @@ export default function ViewBill() {
       }
 
       const element = printRef.current;
-      const canvas = await html2canvas(element, { scale: 2 });
+      try {
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      } catch (e) {}
+
+      const prevWidth = element.style.width;
+      element.style.width = '210mm';
+      element.style.boxSizing = 'border-box';
+      const canvas = await html2canvas(element, { scale: Math.max(window.devicePixelRatio || 1, 2), useCORS: true });
+      element.style.width = prevWidth || '';
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -126,7 +134,15 @@ export default function ViewBill() {
       }
 
       const element = printRef.current;
-      const canvas = await html2canvas(element, { scale: 2 });
+      try {
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      } catch (e) {}
+
+      const prevWidth = element.style.width;
+      element.style.width = '210mm';
+      element.style.boxSizing = 'border-box';
+      const canvas = await html2canvas(element, { scale: Math.max(window.devicePixelRatio || 1, 2), useCORS: true });
+      element.style.width = prevWidth || '';
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
