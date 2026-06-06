@@ -82,6 +82,13 @@
   border-bottom: 1px solid #ef9a9a;
 }
 
+/* Larger column widths for better editing */
+.items-table th:nth-child(1) { width: 52%; }
+.items-table th:nth-child(2) { width: 12%; text-align: right; }
+.items-table th:nth-child(3) { width: 12%; text-align: right; }
+.items-table th:nth-child(4) { width: 16%; text-align: right; }
+.items-table th:nth-child(5) { width: 8%; text-align: center; }
+
 .items-table td {
   padding: 0;
   border-bottom: 1px solid #e0e0e0;
@@ -95,8 +102,8 @@
 .input-cell {
   width: 100%;
   border: none;
-  padding: 12px 16px;
-  font-size: 13px;
+  padding: 14px 18px;
+  font-size: 15px;
   outline: none;
   background: transparent;
   font-family: 'Lato', sans-serif;
@@ -109,6 +116,18 @@
 
 .input-number {
   text-align: right;
+}
+
+/* make action button easier to tap */
+.btn-delete {
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .items-table th:nth-child(1) { width: 50%; }
+  .items-table th:nth-child(2), .items-table th:nth-child(3), .items-table th:nth-child(4) { width: auto; }
+  .form-actions .btn { width: 48%; }
 }
 
 .input-cell {
