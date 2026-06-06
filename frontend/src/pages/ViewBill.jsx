@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { getBillById, getCompany } from "../services/billService";
 import { numToWordsMr } from "../utils/numberToWords";
 import "../styles/ViewBill.css";
@@ -10,6 +10,9 @@ export default function ViewBill() {
   const [bill, setBill] = useState(null);
   const [company, setCompany] = useState(null);
   const printRef = useRef();
+  const location = useLocation();
+  const [autoDownloaded, setAutoDownloaded] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const loadData = async () => {
@@ -30,6 +33,20 @@ export default function ViewBill() {
 
     loadData();
   }, [id]);
+
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(location.search);
+      const shouldDownload = params.get("download") === "1" || params.get("download") === "true";
+      if (shouldDownload && bill && company && !autoDownloaded) {
+        // trigger download once data is ready
+        downloadPDF().catch((e) => console.error("auto download error", e));
+        setAutoDownloaded(true);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [location.search, bill, company, autoDownloaded]);
 
   const fmt = (value) => {
     if (value === null || value === undefined || Number.isNaN(Number(value))) {

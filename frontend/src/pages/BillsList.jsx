@@ -119,8 +119,8 @@ export default function BillsList() {
                   <td>{new Date(bill.createdAt).toLocaleDateString()}</td>
                   <td className="amount">₹{bill.totalAmount.toLocaleString()}</td>
                   <td className="actions">
-                    <Link to={`/view-bill/${bill._id}`}>
-                      <button className="btn-view" title="View">👁️</button>
+                    <Link to={`/view-bill/${bill._id}?download=1`} target="_blank" rel="noopener noreferrer">
+                      <button className="btn-view" title="Download">📥</button>
                     </Link>
                     <button className="btn-edit" onClick={() => handleEdit(bill._id)} title="Edit">✏️</button>
                     <button className="btn-delete" onClick={() => handleDelete(bill._id)} title="Delete">🗑️</button>
