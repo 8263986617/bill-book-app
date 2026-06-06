@@ -379,6 +379,7 @@ export default function CreateBill() {
 
       <div className="bill-form-section">
         <h2>बिल वस्तू</h2>
+        <div className="items-table-wrapper">
         <table className="items-table">
           <thead>
             <tr>
@@ -456,6 +457,7 @@ export default function CreateBill() {
             })}
           </tbody>
         </table>
+        </div>
 
         <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
           <button className="btn-add-item" onClick={addItem}>

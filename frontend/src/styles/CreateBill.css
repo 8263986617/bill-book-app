@@ -70,6 +70,46 @@
   margin-bottom: 12px;
 }
 
+.items-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ensure table is wide enough to enable horizontal scroll on small screens */
+.items-table {
+  min-width: 760px;
+}
+
+/* Sticky first three columns on small screens so name/qty/rate stay visible */
+@media (max-width: 900px) {
+  .items-table th:first-child,
+  .items-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: #fff;
+  }
+
+  .items-table th:nth-child(2),
+  .items-table td:nth-child(2) {
+    position: sticky;
+    left: 320px; /* width of first column */
+    z-index: 4;
+    background: #fff;
+    text-align: right;
+  }
+
+  .items-table th:nth-child(3),
+  .items-table td:nth-child(3) {
+    position: sticky;
+    left: 400px; /* first + second col */
+    z-index: 4;
+    background: #fff;
+    text-align: right;
+  }
+}
+
 .items-table th {
   background: #ffebee;
   color: #c41e3a;
