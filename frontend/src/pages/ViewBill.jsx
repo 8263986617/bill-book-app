@@ -192,6 +192,9 @@ export default function ViewBill() {
         <button className="btn btn-primary" onClick={printBill}>
           🖨️ Print
         </button>
+        <button className="btn btn-primary" onClick={downloadPDF}>
+          ⬇️ PDF डाउनलोड करा
+        </button>
         <button className="btn btn-primary" onClick={sharePdfOnWhatsApp}>
           📎 PDF WhatsApp शेअर करा
         </button>
